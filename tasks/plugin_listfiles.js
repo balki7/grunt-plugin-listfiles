@@ -8,43 +8,38 @@
 
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
+    var _dumpDebugInformation = function (target) {
+        var options = target.options();
+        var files = target.files;
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
-
-  grunt.registerMultiTask('plugin_listfiles', 'The Grunt plugin that lists files in the given directory recursively.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
-
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
+        if (!options.debug) {
+            return;
         }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
 
-      // Handle options.
-      src += options.punctuation;
+        grunt.log.writeln("Running target : " + target.target);
+        grunt.log.writeflags(options, 'Target Options');
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
+        target.filesSrc.forEach(function (filePath) {
+            grunt.log.writeln("Configured Folder: " + filePath);
+        });
+    };
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+    var _listFolder = function (target) {
+        target.filesSrc.forEach(function (folderPath) {
+            if (grunt.file.isDir(folderPath)){
+                grunt.file.recurse(folderPath, function (abspath, rootdir, subdir, filename) {
+                    if (grunt.file.isFile(abspath)) {
+                        grunt.log.writeln("Found file   %s", abspath);
+                    }
+                });
+            }
+        });
+    };
+
+    grunt.registerMultiTask('listFiles', 'The Grunt plugin that lists files in the given directory recursively.', function () {
+        var options = this.options({debug: false});
+        _dumpDebugInformation(this);
+        _listFolder(this);
     });
-  });
-
 };

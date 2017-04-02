@@ -8,79 +8,31 @@
 
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-  // Project configuration.
-  grunt.initConfig({
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'tasks/*.js',
-        '<%= nodeunit.tests %>'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
-      }
-    },
-
-    // Before generating any new files, remove any previously-created files.
-    clean: {
-      tests: ['tmp']
-    },
-
-    // Configuration to be run (and then tested).
-    plugin_listfiles: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!'
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
-      }
-    },
-
-    // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js']
-    }
-
-  });
-
-  // Actually load this plugin's task(s).
-  grunt.loadTasks('tasks');
-
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
-
-  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
-  // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'plugin_listfiles', 'nodeunit']);
-
-  // By default, lint and run all tests.
-  grunt.registerTask('default', ['listFiles', 'test']);
-
-    grunt.registerTask("listFiles", "List files in the directory", function () {
-        var options = this.options({folderToScan: '', debug: false});
-        if (options.debug) {
-            grunt.log.writeflags(options, 'Options');
-        }
-
-        grunt.file.recurse(options.folderToScan, function (abspath, rootdir, subdir, filename) {
-            if (grunt.file.isFile(abspath)) {
-                //grunt.log.writeln("File : %s", abspath);
+    grunt.initConfig({
+        listFiles: {
+            options: {
+                folderToScan: './',
+                debug: true
+            },
+            dev: {
+                src: ['./node_modules']
+            },
+            prod: {
+                options: {
+                    debug: false
+                },
+                files: [{
+                    src: './node_modules'
+                }
+                ]
             }
-        });
+        }
+
     });
 
+    grunt.loadTasks('tasks');
+
+    grunt.registerTask('default', ['listFiles']);
 };
