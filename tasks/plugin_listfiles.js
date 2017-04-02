@@ -27,7 +27,8 @@ module.exports = function (grunt) {
 
     var _listFolder = function (target) {
         target.filesSrc.forEach(function (folderPath) {
-            if (grunt.file.isDir(folderPath)){
+            if (grunt.file.isDir(folderPath)) {
+                grunt.log.writeln("Found file   %s", folderPath);
                 grunt.file.recurse(folderPath, function (abspath, rootdir, subdir, filename) {
                     if (grunt.file.isFile(abspath)) {
                         grunt.log.writeln("Found file   %s", abspath);

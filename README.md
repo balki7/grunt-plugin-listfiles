@@ -17,14 +17,14 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-plugin-listfiles');
 ```
 
-## The "plugin_listfiles" task
+## The "listFiles" task
 
 ### Overview
-In your project's Gruntfile, add a section named `plugin_listfiles` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `listFiles` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  plugin_listfiles: {
+  listFiles: {
     options: {
       // Task-specific options go here.
     },
@@ -37,47 +37,41 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+#### options.debug
+Type: `Boolean`
+Default value: `false`
 
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
+A boolean value that is used to set debugger as on or off.
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
 ```js
 grunt.initConfig({
-  plugin_listfiles: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+  listFiles: {
   },
 });
 ```
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
 ```js
 grunt.initConfig({
-  plugin_listfiles: {
+  listFiles: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      debug: true
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+    dev: {
+        src: ['./']
     },
+    prod: {
+        options: {
+            debug: false
+        },
+        files: [{
+            src: './'
+        }
+        ]
+    }
   },
 });
 ```
