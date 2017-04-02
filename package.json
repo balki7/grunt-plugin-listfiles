@@ -1,7 +1,7 @@
 {
   "name": "grunt-plugin-listfiles",
   "description": "The Grunt plugin that lists files in the given directory recursively.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/balki7/grunt-plugin-listfiles",
   "author": {
     "name": "Balkı Gemirter",
